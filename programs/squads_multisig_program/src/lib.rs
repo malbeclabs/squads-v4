@@ -25,7 +25,7 @@ mod utils;
 security_txt! {
     name: "Squads Multisig Program",
     project_url: "https://squads.so",
-    contacts: "email:security@sqds.io,email:contact@osec.io",
+    contacts: "email:disclosure@sqds.io,email:contact@osec.io",
     policy: "https://github.com/Squads-Protocol/v4/blob/main/SECURITY.md",
     preferred_languages: "en",
     source_code: "https://github.com/squads-protocol/v4",

@@ -4,13 +4,13 @@ Learn more about Squads perpetual bug bounty program
 2. Incident response process
 3. Security bug bounties 
 ### Reporting security problems
-DO NOT CREATE AN ISSUE to report a security problem. Instead, please send an email to security@sqds.io and provide your GitHub username so we can add you to a new draft security advisory for further discussion. 
+DO NOT CREATE AN ISSUE to report a security problem. Instead, please send an email to disclosure@sqds.io and provide your GitHub username so we can add you to a new draft security advisory for further discussion. 
 For security reasons, we do not accept vulnerability disclosures presently via email, nor do we accept attachments when provided via email for vulnerability disclosures. 
 We suggest that you ensure that multi-factor authentication is enabled on your account prior to submitting.
 ### Incident response process
 In case an incident is discovered or reported, the following process will be followed to contain, respond and remediate:
 1. Establish a new draft security advisory
-In response to an email to security@sqds.so, a member of the Squads team will: 
+In response to an email to disclosure@sqds.io, a member of the Squads team will: 
 * create a new draft security advisory for the incident at  
 * add the reporter's Github user and the squads-protocol/security-incident-response-team group to the draft security advisory 
 * create a private fork of the repository (grey button towards the bottom of the page) 
