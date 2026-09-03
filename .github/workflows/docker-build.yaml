@@ -1,8 +1,5 @@
 name: Build and Test
 
-# No paths filter. Both jobs are required status checks on main, so a pull request
-# that skipped them could never satisfy the requirement and would stay blocked. The
-# BuildKit cache makes a run on an unrelated change cheap.
 on:
   pull_request:
   push:
@@ -21,7 +18,7 @@ jobs:
       - uses: docker/setup-buildx-action@v3
 
       - name: Build
-        run: make build DOCKER_BUILD_FLAGS='--cache-from type=gha,scope=build --cache-to type=gha,mode=max,scope=build'
+        run: make build
 
       # The build succeeding is not enough on its own: --output writes whatever the
       # artifacts stage contains, so an empty or missing .so would still exit 0.
@@ -51,4 +48,4 @@ jobs:
       # solana-test-validator in a container. No Anchor CLI and no Solana toolchain
       # are installed on the runner.
       - name: Test
-        run: make test DOCKER_BUILD_FLAGS='--cache-from type=gha,scope=testing --cache-to type=gha,mode=max,scope=testing'
+        run: make test

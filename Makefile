@@ -1,7 +1,3 @@
-# CI passes the GitHub Actions cache backend through this. Empty locally, where the
-# daemon's own cache already persists between builds.
-DOCKER_BUILD_FLAGS ?=
-
 .PHONY: build build-testing test clean-docker
 
 # The program builds inside Docker so no Solana or Anchor toolchain is needed on the
@@ -9,7 +5,7 @@ DOCKER_BUILD_FLAGS ?=
 # root-owned. The container's target/ is a BuildKit cache mount, which also keeps it
 # from sharing a fingerprint directory with any host cargo build.
 build:
-	DOCKER_BUILDKIT=1 docker build --platform linux/amd64 $(DOCKER_BUILD_FLAGS) \
+	DOCKER_BUILDKIT=1 docker build --platform linux/amd64 \
 		-f Dockerfile.build --target artifacts \
 		--output type=local,dest=target/deploy .
 
@@ -17,7 +13,7 @@ build:
 # program ID, so it goes to its own output directory and does not clobber the
 # deployable artifact in target/deploy.
 build-testing:
-	DOCKER_BUILDKIT=1 docker build --platform linux/amd64 $(DOCKER_BUILD_FLAGS) \
+	DOCKER_BUILDKIT=1 docker build --platform linux/amd64 \
 		--build-arg FEATURES=testing \
 		-f Dockerfile.build --target artifacts \
 		--output type=local,dest=target/deploy-testing .
