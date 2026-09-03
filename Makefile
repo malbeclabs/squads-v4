@@ -1,4 +1,4 @@
-.PHONY: build build-testing test clean-docker
+.PHONY: build build-testing test clean clean-docker
 
 # The program builds inside Docker so no Solana or Anchor toolchain is needed on the
 # host. --output writes the .so as the invoking user, so nothing in target/ ends up
@@ -23,6 +23,11 @@ build-testing:
 test: build-testing
 	yarn turbo run build
 	./scripts/run-tests.sh
+
+# Removes what the builds export. The BuildKit cache mounts are what make a rebuild
+# fast, so they are left alone here and cleared separately by clean-docker.
+clean:
+	rm -rf target/deploy target/deploy-testing
 
 # BuildKit has no project-level filter for cache mounts, so this scopes to ours by
 # matching the program name that appears in the RUN command each mount is recorded
