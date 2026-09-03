@@ -5150,7 +5150,6 @@ dependencies = [
  "solana-address-lookup-table-interface",
  "solana-borsh",
  "solana-program",
- "solana-security-txt",
 ]
 
 [[package]]
