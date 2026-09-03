@@ -7,8 +7,6 @@
 // Re-export anchor_lang for convenience.
 pub use anchor_lang;
 use anchor_lang::prelude::*;
-#[cfg(not(feature = "no-entrypoint"))]
-use solana_security_txt::security_txt;
 
 pub use instructions::ProgramConfig;
 pub use instructions::*;
@@ -20,17 +18,6 @@ pub mod errors;
 pub mod instructions;
 pub mod state;
 mod utils;
-
-#[cfg(not(feature = "no-entrypoint"))]
-security_txt! {
-    name: "Squads Multisig Program",
-    project_url: "https://squads.so",
-    contacts: "email:disclosure@sqds.io,email:contact@osec.io",
-    policy: "https://github.com/Squads-Protocol/v4/blob/main/SECURITY.md",
-    preferred_languages: "en",
-    source_code: "https://github.com/squads-protocol/v4",
-    auditors: "OtterSec, Neodyme"
-}
 
 #[cfg(not(feature = "testing"))]
 declare_id!("SQDS4ep65T869zMMBKyuUq6aD6EgTu8psMjkvj52pCf");
