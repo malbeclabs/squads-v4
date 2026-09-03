@@ -4,6 +4,8 @@ use std::str::FromStr;
 
 use clap::Args;
 
+use crate::utils::resolve_program_id;
+
 /// Derive and display the vault PDA address for a given multisig and vault index.
 #[derive(Args)]
 pub struct DisplayVault {
@@ -28,10 +30,7 @@ impl DisplayVault {
             vault_index,
         } = self;
 
-        let program_id =
-            program_id.unwrap_or_else(|| "SQDS4ep65T869zMMBKyuUq6aD6EgTu8psMjkvj52pCf".to_string());
-
-        let program_id = Pubkey::from_str(&program_id).expect("Invalid program ID");
+        let program_id = resolve_program_id(program_id);
 
         let multisig_address =
             Pubkey::from_str(&multisig_address).expect("Invalid multisig address");

@@ -20,7 +20,7 @@ use squads_multisig::squads_multisig_program::accounts::VaultTransactionAccounts
 use squads_multisig::squads_multisig_program::anchor_lang::ToAccountMetas;
 use squads_multisig::squads_multisig_program::instruction::VaultTransactionAccountsClose as VaultTransactionAccountsCloseData;
 
-use crate::utils::{create_signer_from_path, send_and_confirm_transaction};
+use crate::utils::{create_signer_from_path, resolve_program_id, send_and_confirm_transaction};
 
 /// Reclaim rent by closing the accounts of an executed, rejected, or cancelled vault transaction.
 #[derive(Args)]
@@ -69,10 +69,8 @@ impl VaultTransactionAccountsClose {
             rent_collector,
             priority_fee_lamports,
         } = self;
-        let program_id =
-            program_id.unwrap_or_else(|| "SQDS4ep65T869zMMBKyuUq6aD6EgTu8psMjkvj52pCf".to_string());
+        let program_id = resolve_program_id(program_id);
         let multisig = Pubkey::from_str(&multisig_pubkey).expect("Invalid multisig key");
-        let program_id = Pubkey::from_str(&program_id).expect("Invalid program ID");
         let proposal_pda = get_proposal_pda(&multisig, transaction_index, Some(&program_id));
 
         let transaction_pda = get_transaction_pda(&multisig, transaction_index, Some(&program_id));

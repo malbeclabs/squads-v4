@@ -20,7 +20,7 @@ use squads_multisig::squads_multisig_program::anchor_lang::ToAccountMetas;
 use squads_multisig::squads_multisig_program::instruction::ProgramConfigInit as ProgramConfigInitData;
 use squads_multisig::squads_multisig_program::ProgramConfigInitArgs;
 
-use crate::utils::{create_signer_from_path, send_and_confirm_transaction};
+use crate::utils::{create_signer_from_path, resolve_program_id, send_and_confirm_transaction};
 
 /// Initialize the global program config account (one-time setup, authority only).
 #[derive(Args)]
@@ -70,10 +70,7 @@ impl ProgramConfigInit {
             priority_fee_lamports,
         } = self;
 
-        let program_id =
-            program_id.unwrap_or_else(|| "SQDS4ep65T869zMMBKyuUq6aD6EgTu8psMjkvj52pCf".to_string());
-
-        let program_id = Pubkey::from_str(&program_id).expect("Invalid program ID");
+        let program_id = resolve_program_id(program_id);
         let program_config_authority = Pubkey::from_str(&program_config_authority)
             .expect("Invalid program config authority address");
         let treasury = Pubkey::from_str(&treasury).expect("Invalid treasury address");

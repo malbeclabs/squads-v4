@@ -37,7 +37,7 @@ use crate::command::transfer_common::{
     fetch_mint_decimals_and_token_program, format_token_amount, parse_pubkey,
     resolve_recipient_token_account,
 };
-use crate::utils::{create_signer_from_path, send_and_confirm_transaction};
+use crate::utils::{create_signer_from_path, resolve_program_id, send_and_confirm_transaction};
 
 /// Batch native SOL (`SystemProgram::transfer`) and SPL token transfers from the vault in one
 /// Squads vault transaction. Pass each leg with `--transfer` (repeatable):
@@ -158,10 +158,7 @@ impl InitiateBatchTransfer {
             approve,
         } = self;
 
-        let program_id =
-            program_id.unwrap_or_else(|| "SQDS4ep65T869zMMBKyuUq6aD6EgTu8psMjkvj52pCf".to_string());
-
-        let program_id = Pubkey::from_str(&program_id).expect("Invalid program ID");
+        let program_id = resolve_program_id(program_id);
 
         let transaction_creator_keypair = create_signer_from_path(keypair).unwrap();
         let transaction_creator = transaction_creator_keypair.pubkey();

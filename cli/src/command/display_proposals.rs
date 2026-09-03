@@ -11,6 +11,8 @@ use squads_multisig::solana_rpc_client::nonblocking::rpc_client::RpcClient;
 use squads_multisig::squads_multisig_program::state::{Batch, ConfigTransaction, VaultTransaction};
 use squads_multisig::state::{Multisig, Proposal, ProposalStatus};
 
+use crate::utils::resolve_program_id;
+
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 enum TxKind {
     Vault,
@@ -57,10 +59,7 @@ impl DisplayProposals {
             limit,
         } = self;
 
-        let program_id =
-            program_id.unwrap_or_else(|| "SQDS4ep65T869zMMBKyuUq6aD6EgTu8psMjkvj52pCf".to_string());
-
-        let program_id = Pubkey::from_str(&program_id).expect("Invalid program ID");
+        let program_id = resolve_program_id(program_id);
 
         let rpc_url = rpc_url.unwrap_or_else(|| "https://api.mainnet-beta.solana.com".to_string());
         let rpc_client = RpcClient::new(rpc_url.clone());
