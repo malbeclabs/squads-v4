@@ -7,7 +7,7 @@ seeds = false
 skip-lint = false
 
 [programs.localnet]
-multisig = "SQDS4ep65T869zMMBKyuUq6aD6EgTu8psMjkvj52pCf"
+multisig = "DZSQabvc4J8VTvjphhadVr9PDsBEqLyxQKYhbFiYfVoS"
 
 [registry]
 url = "https://api.apr.dev"
