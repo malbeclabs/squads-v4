@@ -14,10 +14,13 @@ TEST_PROGRAM_ID="${TEST_PROGRAM_ID:-GyhGAqjokLwF9UXdQ2dR5Zwiup242j4mX4J1tSMKyAmD
 FIXTURE_ADDRESS="${FIXTURE_ADDRESS:-D3oQ6QxSYk6aKUsmBTa9BghFQvbRi7kxP6h95NSdjjXz}"
 FIXTURE_FILE="tests/fixtures/pre-rent-collector/multisig-account.json"
 SO="target/deploy-testing/squads_multisig_program.so"
-# 8 ticks at the validator's 160 ticks per second is a 50ms slot, against a 400ms
+# 16 ticks at the validator's 160 ticks per second is a 100ms slot, against a 400ms
 # default. The suite spends most of its time waiting for confirmations, so this is
-# most of the difference between a one minute run and a fifteen minute one.
-TICKS_PER_SLOT="${TICKS_PER_SLOT:-8}"
+# most of the difference between a two minute run and a fifteen minute one. It is not
+# set lower because vault_transaction_create_from_buffer confirms a transaction it
+# expects to fail, and at 50ms that confirmation rejects before the test can read the
+# logs it asserts on.
+TICKS_PER_SLOT="${TICKS_PER_SLOT:-16}"
 
 test -f "$SO" || { echo "Missing $SO. Run 'make build-testing' first." >&2; exit 1; }
 
