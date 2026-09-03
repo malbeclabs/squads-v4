@@ -2,6 +2,10 @@
 
 FROM solanafoundation/solana-verifiable-build:2.3.13 AS builder
 
+# Empty for the deployable build. The test suite sets this to `testing`, which selects
+# a separate program ID and program config initializer inside the program.
+ARG FEATURES=
+
 WORKDIR /build
 
 # The image already carries platform-tools and cargo-build-sbf. It does not carry the
@@ -25,7 +29,8 @@ RUN --mount=type=cache,target=/usr/local/cargo/registry \
     --mount=type=cache,target=/build/target \
     set -e; \
     mkdir -p /artifacts; \
-    cargo build-sbf --manifest-path programs/squads_multisig_program/Cargo.toml -- --locked; \
+    cargo build-sbf ${FEATURES:+--features $FEATURES} \
+        --manifest-path programs/squads_multisig_program/Cargo.toml -- --locked; \
     cp target/deploy/squads_multisig_program.so /artifacts/
 
 FROM scratch AS artifacts
