@@ -1,23 +1,10 @@
 name: Build and Test
 
+# No paths filter. Both jobs are required status checks on main, so a pull request
+# that skipped them could never satisfy the requirement and would stay blocked. The
+# BuildKit cache makes a run on an unrelated change cheap.
 on:
   pull_request:
-    paths:
-      - 'Dockerfile.build'
-      - '.dockerignore'
-      - 'Makefile'
-      - 'scripts/**'
-      - 'Cargo.toml'
-      - 'Cargo.lock'
-      - 'rust-toolchain'
-      - 'programs/**'
-      - 'sdk/**'
-      - 'cli/**'
-      - 'tests/**'
-      - 'package.json'
-      - 'turbo.json'
-      - 'yarn.lock'
-      - '.github/workflows/docker-build.yaml'
   push:
     branches:
       - main
