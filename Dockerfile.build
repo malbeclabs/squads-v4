@@ -1,0 +1,32 @@
+# syntax=docker/dockerfile:1
+
+FROM solanafoundation/solana-verifiable-build:2.3.13 AS builder
+
+WORKDIR /build
+
+# The image already carries platform-tools and cargo-build-sbf. It does not carry the
+# host toolchain this repo pins in rust-toolchain, which rustup syncs on first use.
+# Installing it in its own layer keeps that download out of every source-change rebuild.
+COPY rust-toolchain ./
+RUN rustup toolchain install "$(cat rust-toolchain)"
+
+# The program is a workspace member, so cargo needs the workspace manifest, the
+# lockfile, and every member present to resolve the dependency graph. LICENSE is here
+# because the program manifest points at it with license-file.
+COPY Cargo.toml Cargo.lock LICENSE ./
+COPY programs ./programs
+COPY sdk/rs ./sdk/rs
+COPY cli ./cli
+
+# /build/target is a cache mount, so nothing under it survives into an image layer.
+# The artifact has to be copied out inside this same RUN.
+RUN --mount=type=cache,target=/usr/local/cargo/registry \
+    --mount=type=cache,target=/usr/local/cargo/git \
+    --mount=type=cache,target=/build/target \
+    set -e; \
+    mkdir -p /artifacts; \
+    cargo build-sbf --manifest-path programs/squads_multisig_program/Cargo.toml -- --locked; \
+    cp target/deploy/squads_multisig_program.so /artifacts/
+
+FROM scratch AS artifacts
+COPY --from=builder /artifacts/squads_multisig_program.so /

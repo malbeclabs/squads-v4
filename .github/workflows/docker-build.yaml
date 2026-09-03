@@ -1,0 +1,40 @@
+name: Docker Build
+
+on:
+  pull_request:
+    paths:
+      - 'Dockerfile.build'
+      - '.dockerignore'
+      - 'Makefile'
+      - 'Cargo.toml'
+      - 'Cargo.lock'
+      - 'rust-toolchain'
+      - 'programs/**'
+      - 'sdk/rs/**'
+      - 'cli/**'
+      - '.github/workflows/docker-build.yaml'
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    name: Build program
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # Gives `docker build` the buildx driver, which is what makes the GitHub Actions
+      # cache backend available to the cache mounts in Dockerfile.build.
+      - uses: docker/setup-buildx-action@v3
+
+      - name: Build
+        run: make build DOCKER_BUILD_FLAGS='--cache-from type=gha --cache-to type=gha,mode=max'
+
+      # The build succeeding is not enough on its own: --output writes whatever the
+      # artifacts stage contains, so an empty or missing .so would still exit 0.
+      - name: Report the artifact
+        run: |
+          test -s target/deploy/squads_multisig_program.so
+          ls -l target/deploy/squads_multisig_program.so
+          sha256sum target/deploy/squads_multisig_program.so
