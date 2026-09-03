@@ -122,6 +122,12 @@ make idl-init WALLET=/path/to/authority.json
 and takes the same options. Both default to the DoubleZero mainnet-beta endpoint;
 override with `RPC=<url>`.
 
+Explorers differ in whether they use this. Solana Explorer fetches the IDL account
+from whatever RPC endpoint it is pointed at, so it decodes instructions and accounts
+on a custom cluster. Solscan decodes from its own indexed program registry rather than
+a live lookup, so it shows raw bytes for a program on a custom cluster even when the
+IDL account is present and correct.
+
 ## Usage
 
 Instructions on how to interact with the Squads V4 program can be found in [the Squads developer portal](https://docs.squads.so/main/v/development/development/overview).
