@@ -1,6 +1,4 @@
-# Squads Protocol v4
-
-<img width="2500" alt="Frame 13" src="https://user-images.githubusercontent.com/81624955/182874414-98d63f58-450d-4520-a440-4bfda8f5329f.png">
+# Squads Protocol v4 - DoubleZero Ledger Fork
 
 The v4 program is the latest upgrade to Squads Protocol. It expands the capabilities of multisig with several new features, including time locks, spending limits, roles, sub-accounts, multiple-party payments and support for address lookup tables. This program was designed to make it easier for developers to leverage multisig consensus and account abstraction on Solana, facilitating the creation of fintech-like applications and enhancing the secure management of on-chain assets.
 
@@ -14,13 +12,17 @@ This repository contains:
 
 ## Program (Smart contract) Addresses
 
-The Squads Protocol v4 program is deployed to:
+This fork is deployed to the DoubleZero ledger SVM:
 
- - Solana Mainnet-beta: `SQDS4ep65T869zMMBKyuUq6aD6EgTu8psMjkvj52pCf`
- - Solana Devnet: `SQDS4ep65T869zMMBKyuUq6aD6EgTu8psMjkvj52pCf`
- - Eclipse Mainnet: `eSQDSMLf3qxwHVHeTr9amVAGmZbRLY2rFdSURandt6f`
+ - DoubleZero mainnet-beta: `DZSQabvc4J8VTvjphhadVr9PDsBEqLyxQKYhbFiYfVoS`
 
-Solana deployments can be verified using the [Ellipsis Labs verifiable build](https://github.com/Ellipsis-Labs/solana-verifiable-build) tool.
+The upstream Squads deployments on Solana and Eclipse run a different program ID
+and are unaffected by this fork.
+
+The checked-in typedoc output under `sdk/multisig/docs` is deliberately left as it
+was upstream. It documents the Squads deployment, not this one, so its program IDs
+and its references to Solana clusters and to `solana-verify` do not describe this
+fork. Nothing in this repository regenerates it.
 
 ## Responsibility
 
@@ -70,67 +72,19 @@ later builds reuse them and recompile only what changed.
 cache mounts, so it matches on the program name and could in principle match another
 project whose build command contains the same text.
 
-To deploy the program on a local validator instance for testing or development purposes, you can create a local instance by running this command from the [Solana CLI](https://docs.solana.com/cli/install-solana-cli-tools).
+To run the test suite:
 
 ```
-solana-test-validator
+make test
 ```
 
-To run the tests, first install the node modules for the repository.
+That builds the program with `--features testing` and runs the TypeScript suite
+against a `solana-test-validator` in a container, so no Solana toolchain and no Anchor
+CLI are needed on the host. The node modules have to be installed once first:
 
 ```
 yarn
 ```
-
-or
-
-```
-npm install
-```
-
-And run these tests with this command:
-
-```
-yarn test
-```
-
-### Verifying the code
-
-First, compile the programs code from the `Squads-Protocol/v4` Github repository to get its bytecode.
-
-```
-git clone https://github.com/Squads-Protocol/v4.git
-```
-
-```
-anchor build
-```
-
-Now, install the [Ellipsis Labs verifiable build](https://crates.io/crates/solana-verify) crate.
-
-```
-cargo install solana-verify
-```
-
-Build the program deterministically via solana-verify
-
-```
-solana-verify build -b solanafoundation/solana-verifiable-build:1.18.16
-```
-
-Get the executable hash of the bytecode from the Squads program that was compiled.
-
-```
-solana-verify get-executable-hash target/deploy/squads_multisig_program.so
-```
-
-Get the hash from the bytecode of the on-chain Squads program you want to verify.
-
-```
-solana-verify get-program-hash -u <cluster url> SQDS4ep65T869zMMBKyuUq6aD6EgTu8psMjkvj52pCf
-```
-
-If the hash outputs of those two commands match, the code in the repository matches the on-chain programs code.
 
 ## Usage
 
