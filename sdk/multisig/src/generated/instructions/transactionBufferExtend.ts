@@ -70,7 +70,7 @@ export const transactionBufferExtendInstructionDiscriminator = [
 export function createTransactionBufferExtendInstruction(
   accounts: TransactionBufferExtendInstructionAccounts,
   args: TransactionBufferExtendInstructionArgs,
-  programId = new web3.PublicKey('SQDS4ep65T869zMMBKyuUq6aD6EgTu8psMjkvj52pCf')
+  programId = new web3.PublicKey('DZSQabvc4J8VTvjphhadVr9PDsBEqLyxQKYhbFiYfVoS')
 ) {
   const [data] = transactionBufferExtendStruct.serialize({
     instructionDiscriminator: transactionBufferExtendInstructionDiscriminator,

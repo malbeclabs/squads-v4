@@ -73,7 +73,7 @@ export const proposalCreateInstructionDiscriminator = [
 export function createProposalCreateInstruction(
   accounts: ProposalCreateInstructionAccounts,
   args: ProposalCreateInstructionArgs,
-  programId = new web3.PublicKey('SQDS4ep65T869zMMBKyuUq6aD6EgTu8psMjkvj52pCf')
+  programId = new web3.PublicKey('DZSQabvc4J8VTvjphhadVr9PDsBEqLyxQKYhbFiYfVoS')
 ) {
   const [data] = proposalCreateStruct.serialize({
     instructionDiscriminator: proposalCreateInstructionDiscriminator,

@@ -74,7 +74,7 @@ export const multisigChangeThresholdInstructionDiscriminator = [
 export function createMultisigChangeThresholdInstruction(
   accounts: MultisigChangeThresholdInstructionAccounts,
   args: MultisigChangeThresholdInstructionArgs,
-  programId = new web3.PublicKey('SQDS4ep65T869zMMBKyuUq6aD6EgTu8psMjkvj52pCf')
+  programId = new web3.PublicKey('DZSQabvc4J8VTvjphhadVr9PDsBEqLyxQKYhbFiYfVoS')
 ) {
   const [data] = multisigChangeThresholdStruct.serialize({
     instructionDiscriminator: multisigChangeThresholdInstructionDiscriminator,

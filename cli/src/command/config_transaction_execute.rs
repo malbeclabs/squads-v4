@@ -18,7 +18,7 @@ use squads_multisig::solana_rpc_client::nonblocking::rpc_client::RpcClient;
 use squads_multisig::squads_multisig_program::accounts::ConfigTransactionExecute as ConfigTransactionExecuteAccounts;
 use squads_multisig::squads_multisig_program::instruction::ConfigTransactionExecute as ConfigTransactionExecuteData;
 
-use crate::utils::{create_signer_from_path, send_and_confirm_transaction};
+use crate::utils::{create_signer_from_path, resolve_program_id, send_and_confirm_transaction};
 
 /// Execute an approved config transaction on-chain.
 #[derive(Args)]
@@ -63,10 +63,7 @@ impl ConfigTransactionExecute {
             priority_fee_lamports,
         } = self;
 
-        let program_id =
-            program_id.unwrap_or_else(|| "SQDS4ep65T869zMMBKyuUq6aD6EgTu8psMjkvj52pCf".to_string());
-
-        let program_id = Pubkey::from_str(&program_id).expect("Invalid program ID");
+        let program_id = resolve_program_id(program_id);
 
         let transaction_creator_keypair = create_signer_from_path(keypair).unwrap();
         let transaction_creator = transaction_creator_keypair.pubkey();

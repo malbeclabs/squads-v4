@@ -23,7 +23,7 @@ use squads_multisig::squads_multisig_program::instruction::ProposalCancel;
 use squads_multisig::squads_multisig_program::instruction::ProposalReject;
 use squads_multisig::squads_multisig_program::ProposalVoteArgs;
 
-use crate::utils::{create_signer_from_path, send_and_confirm_transaction};
+use crate::utils::{create_signer_from_path, resolve_program_id, send_and_confirm_transaction};
 
 /// Cast an approve or reject vote on an existing proposal.
 #[derive(Args)]
@@ -78,10 +78,7 @@ impl ProposalVote {
             fee_payer_keypair,
         } = self;
 
-        let program_id =
-            program_id.unwrap_or_else(|| "SQDS4ep65T869zMMBKyuUq6aD6EgTu8psMjkvj52pCf".to_string());
-
-        let program_id = Pubkey::from_str(&program_id).expect("Invalid program ID");
+        let program_id = resolve_program_id(program_id);
 
         let transaction_creator_keypair = create_signer_from_path(keypair).unwrap();
 

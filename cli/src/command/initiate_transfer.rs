@@ -36,7 +36,7 @@ use squads_multisig::vault_transaction::VaultTransactionMessageExt;
 use crate::command::transfer_common::{
     fetch_mint_decimals, format_token_amount, resolve_recipient_token_account,
 };
-use crate::utils::{create_signer_from_path, send_and_confirm_transaction};
+use crate::utils::{create_signer_from_path, resolve_program_id, send_and_confirm_transaction};
 
 /// Create and activate a vault transaction that transfers SOL or SPL tokens from the vault.
 #[derive(Args)]
@@ -112,13 +112,10 @@ impl InitiateTransfer {
             approve,
         } = self;
 
-        let program_id =
-            program_id.unwrap_or_else(|| "SQDS4ep65T869zMMBKyuUq6aD6EgTu8psMjkvj52pCf".to_string());
+        let program_id = resolve_program_id(program_id);
 
         let token_program_id = token_program_id
             .unwrap_or_else(|| "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA".to_string());
-
-        let program_id = Pubkey::from_str(&program_id).expect("Invalid program ID");
         let token_program_id = Pubkey::from_str(&token_program_id).expect("Invalid program ID");
 
         let transaction_creator_keypair = create_signer_from_path(keypair).unwrap();

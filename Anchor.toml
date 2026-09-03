@@ -1,13 +1,9 @@
-[toolchain]
-anchor_version = "0.32.0" # `anchor-cli` version to use
-solana_version = "2.2.0" # Solana version to use
-
 [features]
 seeds = false
 skip-lint = false
 
 [programs.localnet]
-multisig = "SQDS4ep65T869zMMBKyuUq6aD6EgTu8psMjkvj52pCf"
+multisig = "DZSQabvc4J8VTvjphhadVr9PDsBEqLyxQKYhbFiYfVoS"
 
 [registry]
 url = "https://api.apr.dev"

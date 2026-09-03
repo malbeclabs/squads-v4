@@ -74,7 +74,7 @@ export const multisigSetTimeLockInstructionDiscriminator = [
 export function createMultisigSetTimeLockInstruction(
   accounts: MultisigSetTimeLockInstructionAccounts,
   args: MultisigSetTimeLockInstructionArgs,
-  programId = new web3.PublicKey('SQDS4ep65T869zMMBKyuUq6aD6EgTu8psMjkvj52pCf')
+  programId = new web3.PublicKey('DZSQabvc4J8VTvjphhadVr9PDsBEqLyxQKYhbFiYfVoS')
 ) {
   const [data] = multisigSetTimeLockStruct.serialize({
     instructionDiscriminator: multisigSetTimeLockInstructionDiscriminator,

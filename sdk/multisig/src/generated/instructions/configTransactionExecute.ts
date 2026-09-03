@@ -58,7 +58,7 @@ export const configTransactionExecuteInstructionDiscriminator = [
  */
 export function createConfigTransactionExecuteInstruction(
   accounts: ConfigTransactionExecuteInstructionAccounts,
-  programId = new web3.PublicKey('SQDS4ep65T869zMMBKyuUq6aD6EgTu8psMjkvj52pCf')
+  programId = new web3.PublicKey('DZSQabvc4J8VTvjphhadVr9PDsBEqLyxQKYhbFiYfVoS')
 ) {
   const [data] = configTransactionExecuteStruct.serialize({
     instructionDiscriminator: configTransactionExecuteInstructionDiscriminator,

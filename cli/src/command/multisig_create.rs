@@ -24,7 +24,7 @@ use squads_multisig::squads_multisig_program::state::ProgramConfig;
 use squads_multisig::squads_multisig_program::MultisigCreateArgsV2;
 use squads_multisig::state::{Member, Permissions};
 
-use crate::utils::{create_signer_from_path, send_and_confirm_transaction};
+use crate::utils::{create_signer_from_path, resolve_program_id, send_and_confirm_transaction};
 
 /// Create a new Squads multisig with the specified members and threshold.
 #[derive(Args)]
@@ -84,10 +84,7 @@ impl MultisigCreate {
             seed_keypair,
         } = self;
 
-        let program_id =
-            program_id.unwrap_or_else(|| "SQDS4ep65T869zMMBKyuUq6aD6EgTu8psMjkvj52pCf".to_string());
-
-        let program_id = Pubkey::from_str(&program_id).expect("Invalid program ID");
+        let program_id = resolve_program_id(program_id);
 
         let transaction_creator_keypair = create_signer_from_path(keypair).unwrap();
         let transaction_creator = transaction_creator_keypair.pubkey();
