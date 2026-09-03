@@ -71,7 +71,7 @@ export const proposalCancelV2InstructionDiscriminator = [
 export function createProposalCancelV2Instruction(
   accounts: ProposalCancelV2InstructionAccounts,
   args: ProposalCancelV2InstructionArgs,
-  programId = new web3.PublicKey('SQDS4ep65T869zMMBKyuUq6aD6EgTu8psMjkvj52pCf')
+  programId = new web3.PublicKey('DZSQabvc4J8VTvjphhadVr9PDsBEqLyxQKYhbFiYfVoS')
 ) {
   const [data] = proposalCancelV2Struct.serialize({
     instructionDiscriminator: proposalCancelV2InstructionDiscriminator,
