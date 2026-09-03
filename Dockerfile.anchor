@@ -1,0 +1,9 @@
+# Anchor CLI only, for writing the on-chain IDL account. The program itself is built
+# with cargo build-sbf in solanafoundation/solana-verifiable-build, not with anchor.
+FROM rust:1.85-bookworm
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+        libudev-dev \
+    && rm -rf /var/lib/apt/lists/*
+
+RUN cargo install --git https://github.com/coral-xyz/anchor --tag v0.32.1 anchor-cli --locked

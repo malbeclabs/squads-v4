@@ -86,6 +86,42 @@ CLI are needed on the host. The node modules have to be installed once first:
 yarn
 ```
 
+## IDL
+
+The checked-in `sdk/multisig/idl/squads_multisig_program.json` is the Anchor 0.29 spec,
+which is what solita consumes. Anchor 0.30 changed the format, so the file uploaded to
+the on-chain IDL account is generated from it:
+
+```
+make idl
+```
+
+That runs `anchor idl convert` in a container and writes
+`target/squads_multisig_program.0.30.json`. It is derived from the checked-in IDL, so
+it is a build artifact rather than a committed file. Its address comes from the source
+IDL, so regenerating it after a program ID change needs no extra arguments.
+
+To write the IDL account, so a block explorer pointed at a DoubleZero RPC endpoint can
+decode instructions and accounts:
+
+```
+make idl-init
+```
+
+That regenerates the IDL first, so it cannot upload a stale one. The program has to be
+deployed already, and the signing keypair has to be its upgrade authority. It also pays
+rent for the IDL account.
+
+The keypair defaults to `~/.config/solana/id.json`. For one kept elsewhere:
+
+```
+make idl-init WALLET=/path/to/authority.json
+```
+
+`make idl-upgrade` replaces the contents of an existing IDL account after a redeploy,
+and takes the same options. Both default to the DoubleZero mainnet-beta endpoint;
+override with `RPC=<url>`.
+
 ## Usage
 
 Instructions on how to interact with the Squads V4 program can be found in [the Squads developer portal](https://docs.squads.so/main/v/development/development/overview).
