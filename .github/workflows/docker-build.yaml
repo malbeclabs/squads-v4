@@ -1,0 +1,67 @@
+name: Build and Test
+
+on:
+  pull_request:
+    paths:
+      - 'Dockerfile.build'
+      - '.dockerignore'
+      - 'Makefile'
+      - 'scripts/**'
+      - 'Cargo.toml'
+      - 'Cargo.lock'
+      - 'rust-toolchain'
+      - 'programs/**'
+      - 'sdk/**'
+      - 'cli/**'
+      - 'tests/**'
+      - 'package.json'
+      - 'turbo.json'
+      - 'yarn.lock'
+      - '.github/workflows/docker-build.yaml'
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    name: Build program
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # Gives `docker build` the buildx driver, which is what makes the GitHub Actions
+      # cache backend available to the cache mounts in Dockerfile.build.
+      - uses: docker/setup-buildx-action@v3
+
+      - name: Build
+        run: make build DOCKER_BUILD_FLAGS='--cache-from type=gha,scope=build --cache-to type=gha,mode=max,scope=build'
+
+      # The build succeeding is not enough on its own: --output writes whatever the
+      # artifacts stage contains, so an empty or missing .so would still exit 0.
+      - name: Report the artifact
+        run: |
+          test -s target/deploy/squads_multisig_program.so
+          ls -l target/deploy/squads_multisig_program.so
+          sha256sum target/deploy/squads_multisig_program.so
+
+  test:
+    name: Tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: yarn
+
+      - uses: docker/setup-buildx-action@v3
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+
+      # Builds the program with --features testing, then runs the suite against a
+      # solana-test-validator in a container. No Anchor CLI and no Solana toolchain
+      # are installed on the runner.
+      - name: Test
+        run: make test DOCKER_BUILD_FLAGS='--cache-from type=gha,scope=testing --cache-to type=gha,mode=max,scope=testing'
